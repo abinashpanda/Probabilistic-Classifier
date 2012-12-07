@@ -1,16 +1,13 @@
 import csv
 import distribution
-class1_data = distribution.symetricalNormalDistribution(15,-3, 2.25)
-class2_data = distribution.asymetricalNormalDistribution(25,1,1.5,0.5)
-data = {}
-for val in class1_data:
-	data.update({float(val):1})
-for val in class2_data:
-	data.update({float(val):2})
+import random
+import numpy as np
+class1_data = distribution.symetricalNormalDistribution(100,0,2.25)
+class2_data = distribution.asymetricalNormalDistribution(100,7,2.25,0.5)
 fileobject = open('file_1.csv','wb')
 csvfile = csv.writer(fileobject)
-#csvfile.writerow(['class','value'])
-for val in data.keys():
-	csvfile.writerow([data[val],float(val)])
+for val in range(len(class1_data)) :	
+	csvfile.writerow([1,float(class1_data[val])])
+for val in range(len(class2_data)) :
+	csvfile.writerow([2,float(class2_data[val])])
 fileobject.close()
-
