@@ -143,12 +143,3 @@ def estimateAsymGaussianParams(inputdata):
 	sigma = round(sigma_estimated,2)
 	r = round(r_estimated,2)
 	return mean,sigma,r
-if __name__ == '__main__':
-	inputdata = asymetricalNormalDistribution(100,0,2,0.5)
-	mean,sigma,r = estimateAsymGaussianParams(inputdata)	
-	print mean,sigma,r	
-	inputdata2 = symetricalNormalDistribution(100,-3,1.5)
-	mean,sigma = estimateGaussianParams(inputdata2)
-	print mean,sigma
-	print inputdata.size
-	print inputdata2.size
