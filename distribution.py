@@ -22,8 +22,8 @@ def getInputData(filename):
 	fileobject.close()	
 	return class1_data,class2_data
 def computeProb(data,n1,mean_class1,sigma_class1,n2,mean_class2,sigma_class2,r_class2):
-	prob_v_c1 = distribution.probSymGaussian(data,mean_class1,sigma_class1)
-	prob_v_c2 = distribution.probAsymGaussian(data,mean_class2,sigma_class2,r_class2)
+	prob_v_c1 = symetricGaussianDensity(data,mean_class1,sigma_class1)
+	prob_v_c2 = asymetricGaussianDensity(data,mean_class2,sigma_class2,r_class2)
 	prob1 = (n1*prob_v_c1)/((n1*prob_v_c1) + (n2*prob_v_c2))
 	prob2 = (n2*prob_v_c2)/((n1*prob_v_c1) + (n2*prob_v_c2))
 	prob1 = round(prob1,2)
@@ -53,10 +53,10 @@ def symetricGaussianDensity(x,mean=0,sigma = 1):
 	return y
 def symetricalNormalDistribution(size,mean = 0, sigma = 1):
 	y = []
-	x = np.arange(round((mean - (5*sigma)),3),round((mean + (5*sigma)),3),0.001)
+	x = np.arange(round((mean - (7*sigma)),3),round((mean + (7*sigma)),3),0.001)
 	y_cum = []
 	for val in x:
-		y_cum.append(integrate.quad(symetricGaussianDensity,round((mean - (5*sigma)),3),float(val),args = (mean,sigma)))
+		y_cum.append(integrate.quad(symetricGaussianDensity,round((mean - (7*sigma)),3),float(val),args = (mean,sigma)))
 	y_cum = np.array(y_cum)	
 	diction_data = {}
 	for val in range(len(x)):
@@ -65,17 +65,17 @@ def symetricalNormalDistribution(size,mean = 0, sigma = 1):
 	for val in range(size):
 		uniformDistribution.append(round(random.random(),2))
 	for val in range(len(uniformDistribution)):
-		comp = diction_data.has_key(uniformDistribution[val])
-		if comp :
+		valid = diction_data.has_key(uniformDistribution[val])
+		if valid :
 			y.append(diction_data[uniformDistribution[val]])
 	y = np.array(y)	
 	return y
 def asymetricalNormalDistribution(size,mean = 0,sigma = 1, r = 1):
 	y = []
-	x = np.arange(round((mean - (5*sigma)),3),round((mean + (5*sigma)),3),0.001)
+	x = np.arange(round((mean - (7*sigma)),3),round((mean + (7*sigma)),3),0.001)
 	y_cum = []
 	for val in x:
-		y_cum.append(integrate.quad(asymetricGaussianDensity,round((mean - (5*sigma)),3),float(val),args = (mean,sigma,r)))
+		y_cum.append(integrate.quad(asymetricGaussianDensity,round((mean - (7*sigma)),3),float(val),args = (mean,sigma,r)))
 	y_cum = np.array(y_cum)	
 	diction_data = {}
 	for val in range(len(x)):
@@ -84,15 +84,15 @@ def asymetricalNormalDistribution(size,mean = 0,sigma = 1, r = 1):
 	for val in range(size):
 		uniformDistribution.append(round(random.random(),3))
 	for val in range(len(uniformDistribution)):
-		comp = diction_data.has_key(uniformDistribution[val])
-		if comp :
+		valid = diction_data.has_key(uniformDistribution[val])
+		if valid :
 			y.append(diction_data[uniformDistribution[val]])	
 	y = np.array(y)	
 	return y
 def probAsymGaussian(x,mean,sigma,r):
-	return integrate.quad(asymetricGaussianDensity,round((mean - (5*sigma)),3),x,args = (mean,sigma,r))[0]
+	return integrate.quad(asymetricGaussianDensity,round((mean - (7*sigma)),3),x,args = (mean,sigma,r))[0]
 def probSymGaussian(x,mean,sigma):
-	return integrate.quad(symetricGaussianDensity,round((mean - (5*sigma)),3),x,args = (mean,sigma))[0]
+	return integrate.quad(symetricGaussianDensity,round((mean - (7*sigma)),3),x,args = (mean,sigma))[0]
 def gauss_likelyhood(mean,sigma,y):
 	arr = np.power((y-mean),2)
 	arr_sum = arr.sum()
@@ -129,7 +129,6 @@ def asymgauss_likelyhood(mean,sigma,r,inputdata):
 	ret = ((math.log(pi)/2) + (math.log(sigma))+ math.log(r+1) - math.log(2))
 	ret = ret*length	
 	ret = ret + arr_sum
-	ret = ret
 	return ret
 def estimateAsymGaussianParams(inputdata):
 	mean_estimated = 0
@@ -143,3 +142,4 @@ def estimateAsymGaussianParams(inputdata):
 	sigma = round(sigma_estimated,2)
 	r = round(r_estimated,2)
 	return mean,sigma,r
+
